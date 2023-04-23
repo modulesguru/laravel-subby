@@ -99,6 +99,6 @@ class PendingPaymentCollector
                 'collectable_id' => $subscriptionSchedule->id,
                 'date' => $subscriptionSchedule->scheduled_at
             ];
-        });
+        })->toBase();
     }
 }
