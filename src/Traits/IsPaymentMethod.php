@@ -7,10 +7,10 @@ use Bpuig\Subby\Models\PlanSubscriptionSchedule;
 
 trait IsPaymentMethod
 {
-    private $planSubscriptionSchedule = null;
-    private $planSubscription;
-    private $amount;
-    private $currency;
+    private ?PlanSubscriptionSchedule $planSubscriptionSchedule = null;
+    private ?PlanSubscription $planSubscription;
+    private float $amount;
+    private string $currency;
 
     /**
      * Set subscription to charge payment
@@ -18,7 +18,7 @@ trait IsPaymentMethod
      * @param PlanSubscription $planSubscription
      * @return $this
      */
-    public function subscription(PlanSubscription $planSubscription)
+    public function subscription(PlanSubscription $planSubscription): static
     {
         $this->planSubscription = $planSubscription;
 
@@ -30,7 +30,7 @@ trait IsPaymentMethod
      * @param PlanSubscriptionSchedule|null $planSubscriptionSchedule
      * @return $this
      */
-    public function schedule(?PlanSubscriptionSchedule $planSubscriptionSchedule = null)
+    public function schedule(?PlanSubscriptionSchedule $planSubscriptionSchedule = null): static
     {
         $this->planSubscriptionSchedule = $planSubscriptionSchedule;
 
@@ -42,7 +42,7 @@ trait IsPaymentMethod
      * @param $amount
      * @return $this
      */
-    public function amount($amount = null)
+    public function amount($amount = null): static
     {
         $this->amount = $amount;
 
@@ -54,14 +54,14 @@ trait IsPaymentMethod
      * @param string|null $currency
      * @return $this
      */
-    public function currency(?string $currency = null)
+    public function currency(?string $currency = null): static
     {
         $this->currency = $currency;
 
         return $this;
     }
 
-    public function execute()
+    public function execute(): void
     {
         if ($this->planSubscriptionSchedule) {
             $this->executeSchedule();
@@ -75,7 +75,7 @@ trait IsPaymentMethod
      * Try charging via default payment method and then change plan
      * @throws \Exception
      */
-    private function executeSchedule()
+    private function executeSchedule(): void
     {
         try {
             $this->charge();
@@ -91,7 +91,7 @@ trait IsPaymentMethod
      * Execute the strategy
      * Try charging via default payment method and then renew subscription
      */
-    private function executeRenewal()
+    private function executeRenewal(): void
     {
         try {
             $this->charge();
